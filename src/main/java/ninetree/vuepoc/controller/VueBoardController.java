@@ -8,11 +8,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,5 +36,31 @@ public class VueBoardController {
         Optional<VueBoard> vueBoard = vueBoardService.getVueBoard(id);
         VueBoard result = vueBoard.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "not found"));
         return new ResponseEntity<>(result , HttpStatus.OK);
+    }
+
+    @PostMapping("/list/new")
+    public ResponseEntity<VueBoard> postNewBoard(@RequestBody VueBoard board){
+        log.info("BOARD : "+ board);
+        board.setRegDate(LocalDateTime.now());
+        board.setUpDate(LocalDateTime.now());
+        VueBoard result = vueBoardService.insertVueBoard(board);
+        return new ResponseEntity<>( result, HttpStatus.OK );
+    }
+
+    @PutMapping("/list/update")
+    public ResponseEntity<VueBoard> putBoard(@RequestBody VueBoard board) {
+        log.info("UPDATE : " + board);
+        board.setUpDate(LocalDateTime.now());
+        VueBoard result = vueBoardService.updateVueBoard(board);
+        log.info("UPDATED : "+ result);
+        return new ResponseEntity<>( result, HttpStatus.OK );
+    }
+
+    @DeleteMapping("/list/{id}")
+    public ResponseEntity deleteBoard(@PathVariable Long id){
+        log.info("DELETE id : "+id);
+        vueBoardService.deleteVueBoard(id);
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

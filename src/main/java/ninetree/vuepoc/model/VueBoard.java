@@ -14,6 +14,8 @@ import java.time.LocalDateTime;
 @Table(name = "BOARD")
 public class VueBoard {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="BOARD_ID")
     private Long id;
     private String title;
     private String author;

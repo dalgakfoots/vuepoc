@@ -1,7 +1,7 @@
 <script setup>
 import {useRoute , useRouter} from "nuxt/app";
 import {useBoardStore} from "../../stores/boardStore";
-import {onUnmounted, onBeforeMount, onServerPrefetch} from "vue";
+import {onUnmounted, onBeforeMount, onServerPrefetch, onErrorCaptured} from "vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -22,6 +22,14 @@ onBeforeMount(async () => {
 onUnmounted(() => {
   store.unmountData();
 })
+
+const deleteBoard = async (id) => {
+  // TODO 작성자인지 판단하는 메서드 필요
+  let response = await fetch(`/api/list/${id}`, {
+    method : 'DELETE',
+  });
+  await router.push('/list');
+}
 
 definePageMeta({
   validate: async (route) => {
@@ -45,5 +53,11 @@ definePageMeta({
 
     <button @click="router.push({ path : '/list'})">
       Go To List
+    </button>
+    <button @click="deleteBoard(route.params.id)">
+      Delete
+    </button>
+    <button @click="router.push({path : `/list/update/${route.params.id}`})">
+      Update Form
     </button>
 </template>
