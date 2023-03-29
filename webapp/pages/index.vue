@@ -1,6 +1,7 @@
 <script setup>
 import Navigation from "../components/navigation.vue";
 import {useAuthStore} from "../stores/authStore";
+import {onServerPrefetch} from "vue";
 
 const store = useAuthStore();
 
@@ -8,7 +9,7 @@ const getLoginUser = store.loginUser;
 
 const user = computed( () => {
   return store.user;
-})
+});
 
 </script>
 <template>
