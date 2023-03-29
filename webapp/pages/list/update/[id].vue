@@ -1,11 +1,14 @@
 <script setup>
 import {useRoute, useRouter, createError , showError} from "nuxt/app";
 import {useBoardStore} from "../../../stores/boardStore";
+import {useAuthStore} from "../../../stores/authStore";
 import {onBeforeMount, onServerPrefetch, onUnmounted} from "vue";
 
 const route = useRoute();
 const router = useRouter();
 const store = useBoardStore();
+const authStore = useAuthStore();
+
 const board = computed(() => {
   return store.board;
 })
@@ -47,8 +50,8 @@ const handleSubmit = async () => {
     <label for="title">title</label>
     <input id="title" name="title" type="text" v-model="board.title">
     <br/>
-    <label for="author">author</label>
-    <input id="author" name="author" type="text" v-model="board.author">
+    <label for="author">author&nbsp;&nbsp;</label>
+    <span id="author">{{ authStore.user.nickname }}</span>
     <br/>
     <label for="content">content</label>
     <textarea id="content" name="content" v-model="board.content"></textarea>

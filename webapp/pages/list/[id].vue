@@ -1,11 +1,13 @@
 <script setup>
 import {useRoute , useRouter} from "nuxt/app";
 import {useBoardStore} from "../../stores/boardStore";
+import {useAuthStore} from "../../stores/authStore";
 import {onUnmounted, onBeforeMount, onServerPrefetch, onErrorCaptured} from "vue";
 
 const route = useRoute();
 const router = useRouter();
 const store = useBoardStore();
+const authStore = useAuthStore();
 
 const board = computed(() => {
   return store.board;
@@ -54,10 +56,14 @@ definePageMeta({
     <button @click="router.push({ path : '/list'})">
       Go To List
     </button>
-    <button @click="deleteBoard(route.params.id)">
+    <button @click="
+    authStore.user.nickname === board.author ?
+    deleteBoard(route.params.id) : ''">
       Delete
     </button>
-    <button @click="router.push({path : `/list/update/${route.params.id}`})">
+    <button @click="
+      authStore.user.nickname === board.author ?
+      router.push({path : `/list/update/${route.params.id}`}) : ''">
       Update Form
     </button>
 </template>

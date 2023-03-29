@@ -1,13 +1,17 @@
 <script setup>
 import {useListStore} from '../../stores/listStore';
+import {useAuthStore} from '../../stores/authStore';
+
 import {onMounted, onServerPrefetch} from "vue";
 import {useRouter} from "nuxt/app";
 
 const store = useListStore();
+const userStore = useAuthStore();
+
 const router = useRouter();
 
-const getList = computed( () => {
-  return store.getList;
+const isLogin = computed( () => {
+  return Object.keys(userStore.user).length !== 0
 })
 
 const list = computed( () => {
@@ -44,6 +48,6 @@ onServerPrefetch(async () => {
       </tbody>
     </table>
     <hr/>
-    <button @click="router.push({'path' : '/list/new'})">FETCH</button>
+    <button @click=" isLogin ? router.push('/list/new'): ''">WRITE</button>
   </div>
 </template>
