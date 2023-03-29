@@ -32,6 +32,11 @@ export const useAuthStore = defineStore('authStore', {
 
             this.user = await response.json();
             this.isLogin = true;
+        },
+
+        logout() {
+            this.user = {};
+            this.isLogin = false;
         }
     },
 

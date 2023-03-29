@@ -1,12 +1,11 @@
 <script setup>
 import Navigation from "../components/navigation.vue";
 import {useAuthStore} from "../stores/authStore";
-import {onServerPrefetch} from "vue";
 
 const store = useAuthStore();
 
 const getLoginUser = store.loginUser;
-
+const logout = store.logout;
 const user = computed( () => {
   return store.user;
 });
@@ -21,6 +20,9 @@ const user = computed( () => {
     </p>
     <button @click="getLoginUser">
       GET LOGIN USER
+    </button>
+    <button @click="logout">
+      LOGOUT
     </button>
   </header>
 </template>
