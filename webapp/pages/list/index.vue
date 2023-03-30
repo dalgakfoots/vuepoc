@@ -2,13 +2,14 @@
 import {useListStore} from '../../stores/listStore';
 import {useAuthStore} from '../../stores/authStore';
 
-import {onMounted, onServerPrefetch} from "vue";
-import {useRouter} from "nuxt/app";
+import {onMounted, onServerPrefetch, onUpdated} from "vue";
+import {useRouter , useRoute , createError , showError} from "nuxt/app";
 
 const store = useListStore();
 const userStore = useAuthStore();
 
 const router = useRouter();
+const route = useRoute();
 
 const isLogin = computed( () => {
   return Object.keys(userStore.user).length !== 0
@@ -19,11 +20,21 @@ const list = computed( () => {
 })
 
 onMounted(async () => {
-  await store.fetchListForClient();
+  console.log('on client side!')
+  await store.fetchListForClient(route);
+  if(list.value.length === 0) throw createError({
+    statusCode : 404,
+    message : `Not Found Page number ${route.query.page}`
+  });
 })
 
 onServerPrefetch(async () => {
-  await store.fetchListForServer();
+  console.log('on server side!')
+  await store.fetchListForServer(route);
+  if(list.value.length === 0) throw showError({
+    statusCode : 404,
+    message : `Not Found Page number ${route.query.page}`
+  });
 })
 
 </script>
@@ -49,5 +60,6 @@ onServerPrefetch(async () => {
     </table>
     <hr/>
     <button @click=" isLogin ? router.push('/list/new'): ''">WRITE</button>
+    <Pagination/>
   </div>
 </template>

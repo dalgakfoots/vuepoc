@@ -4,6 +4,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ninetree.vuepoc.model.VueBoard;
 import ninetree.vuepoc.service.VueBoardService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.support.PageableUtils;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.SortDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -24,9 +31,11 @@ public class VueBoardController {
     private final VueBoardService vueBoardService;
 
     @GetMapping("/list")
-    public ResponseEntity<List<VueBoard>> getList() {
+    public ResponseEntity<Page<VueBoard>> getList(
+            @PageableDefault(page = 0 , size = 20, sort = "id" , direction = Sort.Direction.DESC) Pageable pageable) {
         log.info("fetching......");
-        List<VueBoard> result = vueBoardService.getVueBoardList();
+        Page<VueBoard> result = vueBoardService.getVueBoardList(pageable);
+        log.info(result.toString());
         return new ResponseEntity<>(result , HttpStatus.OK);
     }
 
