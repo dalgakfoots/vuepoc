@@ -60,11 +60,11 @@ export const useListStore = defineStore('listStore', {
 
         async changeCurrentPageNumber(number) {
             if (+number === this.currentPage) return;
-            const data = await fetch(`/api/list?page=${number-1}`);
-            const temp = await data.json();
-            this.list = temp.content;
-            this.totalPages = temp.totalPages;
-            this.currentPage = temp.number + 1;
+            // const data = await fetch(`/api/list?page=${number-1}`);
+            // const temp = await data.json();
+            // this.list = temp.content;
+            // this.totalPages = temp.totalPages;
+            this.currentPage = +number;
         }
     }
 })
