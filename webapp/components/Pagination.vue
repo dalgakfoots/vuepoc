@@ -16,12 +16,12 @@ const changeCurrentPage = listStore.changeCurrentPageNumber;
 </script>
 <template>
   <div>
-    <NuxtLink v-for="i in totalPage"
+    <a v-for="i in totalPage"
        style="padding-right: 10px ; padding-left: 10px"
-       :to="`/list?page=${i}`" @click="changeCurrentPage(`${i}`)"
+       :href="`/list?page=${i}`" @click="changeCurrentPage(`${i}`)"
               :style="{fontWeight : i === +currentPage ? 'bold' : 'normal'}"
     >
       {{i}}
-    </NuxtLink>
+    </a>
   </div>
 </template>
